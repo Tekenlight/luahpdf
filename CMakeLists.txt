@@ -62,14 +62,24 @@ set(LIBNAME "hpdf")
 
 message(STATUS "LIBRARY NAME IS ${LIBNAME}")
 
-add_library( "${LIBNAME}" SHARED hpdf.c )
-set_target_properties( "${LIBNAME}"
-    PROPERTIES
-    VERSION ${SHARED_LIBRARY_VERSION} SOVERSION ${SHARED_LIBRARY_VERSION}
-	OUTPUT_NAME ${LIBNAME}
-	PREFIX "" # So that the output name is either hpdf.dylib of hpdf.so
-    DEFINE_SYMBOL core_utils_EXPORTS
-    )
+if (APPLE)
+	add_library( "${LIBNAME}" MODULE hpdf.c )
+	set_target_properties( "${LIBNAME}"
+		PROPERTIES
+		OUTPUT_NAME ${LIBNAME}
+		PREFIX "" # So that the output name is either hpdf.dylib of hpdf.so
+		DEFINE_SYMBOL core_utils_EXPORTS
+		)
+else (APPLE)
+	add_library( "${LIBNAME}" SHARED hpdf.c )
+	set_target_properties( "${LIBNAME}"
+		PROPERTIES
+		VERSION ${SHARED_LIBRARY_VERSION} SOVERSION ${SHARED_LIBRARY_VERSION}
+		OUTPUT_NAME ${LIBNAME}
+		PREFIX "" # So that the output name is either hpdf.dylib of hpdf.so
+		DEFINE_SYMBOL core_utils_EXPORTS
+		)
+endif(APPLE)
 
 find_library(LIBLUA NAMES lua NO_CACHE REQUIRED )
 find_library(LIBHPDF NAMES hpdf NO_CACHE REQUIRED )
