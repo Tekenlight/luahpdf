@@ -68,7 +68,7 @@ if (APPLE)
 		PROPERTIES
 		OUTPUT_NAME ${LIBNAME}
 		PREFIX "" # So that the output name is either hpdf.dylib of hpdf.so
-		DEFINE_SYMBOL core_utils_EXPORTS
+		DEFINE_SYMBOL hpdf_EXPORTS
 		)
 else (APPLE)
 	add_library( "${LIBNAME}" SHARED hpdf.c )
@@ -77,7 +77,7 @@ else (APPLE)
 		VERSION ${SHARED_LIBRARY_VERSION} SOVERSION ${SHARED_LIBRARY_VERSION}
 		OUTPUT_NAME ${LIBNAME}
 		PREFIX "" # So that the output name is either hpdf.dylib of hpdf.so
-		DEFINE_SYMBOL core_utils_EXPORTS
+		DEFINE_SYMBOL hpdf_EXPORTS
 		)
 endif(APPLE)
 
