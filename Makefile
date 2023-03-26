@@ -4,14 +4,14 @@ include .config
 # --- the build documentation for more details. ---
 
 PREFIX ?= /usr/local
-MODDIR ?= $(PREFIX)/lib/lua/5.2
-LUAINC ?= -I/usr/include/lua5.2
-HPDFLIB ?= -lhpdf
-HPDFINC ?=
+MODDIR ?= $(PREFIX)/lib/lua/5.3
+LUAINC ?= -I/usr/local/include -I/usr/include/lua5.3
+HPDFLIB ?= -L/usr/local/lib -lhpdf
+HPDFINC ?= -I/usr/local/include
 LUA ?= lua
 LUAC ?= luac
-PLATFORM ?= linux
-# PLATFORM=macosx
+# PLATFORM ?= linux
+PLATFORM=macosx
 
 # --- End of user settings, no need to change anything below this line. ---
 
@@ -22,8 +22,8 @@ ZIP=$(PACKAGE).zip
 linux_COMPILE=cc $(LUAINC) $(HPDFINC) -Wall -O2 -fomit-frame-pointer -shared -fPIC -c -o $@ $<
 linux_LINK=cc -shared -fPIC -o $@ $^ $(HPDFLIB) -lz -lpng -lm
 linux_REPORT=ldd ./$(TARGET)
-macosx_COMPILE=cc -DHPDF_SHARED $(LUAINC) $(HPDFINC) -DLUA_USE_MACOSX -Wall -O2 -fomit-frame-pointer -fPIC -c -o $@ $<
-macosx_LINK=cc -bundle -undefined dynamic_lookup -DLUA_USE_MACOSX $(HPDFLIB) -lz -lpng -o hpdf.so hpdf.o
+macosx_COMPILE=cc $(LUAINC) $(HPDFINC) -DLUA_USE_MACOSX -Wall -O2 -fomit-frame-pointer -fPIC -c -o $@ $<
+macosx_LINK=cc -bundle -undefined dynamic_lookup -DLUA_USE_MACOSX $(HPDFLIB) -lz -L/opt/local/lib -lpng -o hpdf.so hpdf.o
 macosx_REPORT=otool -L ./$(TARGET)
 
 PDF = \
@@ -49,7 +49,7 @@ hpdf.o : hpdf.c
 	$($(PLATFORM)_COMPILE)
 
 dump :
-	cc -E -dM -ansi -DHPDF_SHARED -pedantic -Wall -O2 $(CFLAGS) $(LUAINC) $(HPDFINC) -shared hpdf.c > $@
+	cc -E -dM -ansi -pedantic -Wall -O2 $(CFLAGS) $(LUAINC) $(HPDFINC) -shared hpdf.c > $@
 
 test : $(TARGET)
 	$(LUA) -e "package.path=[[]] package.cpath=[[./?.so;./?.dll]] local hpdf = require [[hpdf]] print(hpdf.VERSION_TEXT)"

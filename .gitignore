@@ -3,3 +3,5 @@ demo/*.pdf
 hpdf.o
 hpdf.so
 *.swp
+build
+
