@@ -86,12 +86,13 @@ else (APPLE)
 endif(APPLE)
 
 
-find_library(LIBHPDF NAMES hpdf NO_CACHE REQUIRED )
-find_library(LIBZ NAMES z NO_CACHE REQUIRED )
-find_library(LIBPNG NAMES png NO_CACHE REQUIRED )
-find_library(LIBM NAMES m NO_CACHE REQUIRED )
+find_library(LIBHPDF NAMES hpdf NO_CACHE REQUIRED ) # port install libharu in apple  or # apt-get install libhpdf-dev in ubuntu
+find_library(LIBZ NAMES z NO_CACHE REQUIRED ) # port install zlib in apple # or apt-get install zlib1g-dev in ubuntu
+find_library(LIBPNG NAMES png NO_CACHE REQUIRED ) # port install libpng in apple or # apt-get install libpng-dev in ubuntu
+find_library(LIBM NAMES m NO_CACHE REQUIRED ) # This should be there with essential libraries of either apple or ubuntu 
+											  # /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk/usr/lib/libm.tbd
+											  # apt-get install build-essential on ubuntu
 
-#message(STATUS "FOUND LUALIB ${LIBLUA}")
 message(STATUS "FOUND LIBHPDF ${LIBHPDF}")
 message(STATUS "FOUND LIBZ ${LIBZ}")
 message(STATUS "FOUND LIBPNG ${LIBPNG}")
