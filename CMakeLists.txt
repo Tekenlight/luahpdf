@@ -69,7 +69,11 @@ if (APPLE)
 		OUTPUT_NAME ${LIBNAME}
 		PREFIX "" # So that the output name is either hpdf.dylib of hpdf.so
 		DEFINE_SYMBOL hpdf_EXPORTS
+		LINK_FLAGS "-undefined dynamic_lookup"
 		)
+	#target_link_options(${LIBNAME}
+	#	PRIVATE -undefined dynamic_lookup
+	#)
 else (APPLE)
 	add_library( "${LIBNAME}" SHARED hpdf.c )
 	set_target_properties( "${LIBNAME}"
@@ -81,19 +85,19 @@ else (APPLE)
 		)
 endif(APPLE)
 
-find_library(LIBLUA NAMES lua NO_CACHE REQUIRED )
+
 find_library(LIBHPDF NAMES hpdf NO_CACHE REQUIRED )
 find_library(LIBZ NAMES z NO_CACHE REQUIRED )
 find_library(LIBPNG NAMES png NO_CACHE REQUIRED )
 find_library(LIBM NAMES m NO_CACHE REQUIRED )
 
-message(STATUS "FOUND LUALIB ${LIBLUA}")
+#message(STATUS "FOUND LUALIB ${LIBLUA}")
 message(STATUS "FOUND LIBHPDF ${LIBHPDF}")
 message(STATUS "FOUND LIBZ ${LIBZ}")
 message(STATUS "FOUND LIBPNG ${LIBPNG}")
 message(STATUS "FOUND LIBM ${LIBM}")
 
-target_link_libraries( "${LIBNAME}" ${LIBLUA} ${LIBHPDF} ${LIBZ} ${LIBPNG} ${LIBM} )
+target_link_libraries( "${LIBNAME}" ${LIBHPDF} ${LIBZ} ${LIBPNG} ${LIBM} )
 
 target_include_directories( "${LIBNAME}"
     PUBLIC
